@@ -1,0 +1,13 @@
+{
+  "name": "morning-edition",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "curate": "node curator.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "feed-parser": "^0.0.2",
+    "node-html-parser": "^7.1.0"
+  }
+}

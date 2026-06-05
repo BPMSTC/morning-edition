@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Edition - 2026-06-05</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .magazine {
+            max-width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+            border-bottom: 4px solid #d4a574;
+        }
+
+        .header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 96px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .header .date {
+            font-size: 24px;
+            font-weight: 300;
+            color: #b0b0b0;
+            letter-spacing: 2px;
+        }
+
+        .header .tagline {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #d4a574;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .spreads {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .spread {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spread::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .spread-number {
+            font-family: 'Fraunces', serif;
+            font-size: 200px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 40px;
+            opacity: 0.15;
+        }
+
+        .spread-title {
+            font-family: 'Fraunces', serif;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 40px;
+        }
+
+        .spread-content {
+            font-size: 24px;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .spread-meta {
+            font-size: 18px;
+            opacity: 0.7;
+            display: flex;
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .spread-source {
+            font-weight: 600;
+        }
+
+        .spread-category {
+            opacity: 0.6;
+        }
+
+        /* Distinct Spread Styles */
+
+        .spread-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .spread-midnight {
+            background: #1a1a2e;
+            color: #eee;
+        }
+
+        .spread-midnight .spread-title {
+            color: #64d7ff;
+        }
+
+        .spread-alert {
+            background: #f8e9e4;
+            color: #2c2c2c;
+            border-left: 20px solid #d4574a;
+        }
+
+        .spread-alert .spread-title {
+            color: #d4574a;
+        }
+
+        .spread-terminal {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', monospace;
+            padding: 60px;
+        }
+
+        .spread-terminal .spread-title {
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+            font-size: 48px;
+        }
+
+        .spread-terminal .spread-content {
+            font-size: 20px;
+        }
+
+        .spread-academic {
+            background: #faf8f3;
+            color: #2c2c2c;
+        }
+
+        .spread-academic .spread-title {
+            color: #4a4a4a;
+        }
+
+        .spread-academic .drop-cap {
+            float: left;
+            font-family: 'Fraunces', serif;
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 80px;
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+
+        .spread-stat {
+            background: linear-gradient(to bottom, #f5f5f5, #ffffff);
+            color: #1a1a1a;
+        }
+
+        .spread-stat .stat-highlight {
+            font-family: 'Fraunces', serif;
+            font-size: 140px;
+            font-weight: 700;
+            color: #d4a574;
+            line-height: 1;
+            margin: 40px 0;
+        }
+
+        .spread-vibrant {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: #1a1a1a;
+        }
+
+        .spread-vibrant .spread-title {
+            color: #1a1a1a;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.3);
+        }
+
+        .spread-minimal {
+            background: white;
+            color: #2c2c2c;
+            padding: 100px 100px;
+        }
+
+        .spread-minimal .spread-number {
+            color: #d4a574;
+            opacity: 0.3;
+            font-size: 150px;
+        }
+
+        .spread-column {
+            background: #f9f9f9;
+            color: #2c2c2c;
+        }
+
+        .spread-column .spread-content {
+            columns: 2;
+            column-gap: 60px;
+        }
+
+        .spread-tilted {
+            background: linear-gradient(45deg, #e8f4f8, #d4e9f7);
+            color: #2c2c2c;
+            transform: skewY(-2deg);
+        }
+
+        .spread-tilted .spread-title {
+            transform: skewY(2deg);
+        }
+
+        .spread-neon {
+            background: #0a0e27;
+            color: #00ff88;
+            border-top: 8px solid #00ff88;
+            border-bottom: 8px solid #ff00ff;
+        }
+
+        .spread-neon .spread-title {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .spread-vintage {
+            background: #e8e4d0;
+            color: #3a3a3a;
+            border: 20px solid #8b7355;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        .spread-vintage .spread-title {
+            text-decoration: underline;
+            text-decoration-color: #8b7355;
+        }
+
+        .spread-floating {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px;
+        }
+
+        .spread-floating .card {
+            background: rgba(255,255,255,0.95);
+            color: #2c2c2c;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(-20px);
+        }
+
+        .spread-floating .card .spread-title {
+            color: #667eea;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: #999;
+            text-align: center;
+            padding: 60px 40px;
+            font-size: 18px;
+            border-top: 4px solid #d4a574;
+        }
+
+        .footer-title {
+            font-family: 'Fraunces', serif;
+            font-size: 36px;
+            color: #d4a574;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .spread {
+                padding: 60px 40px;
+            }
+
+            .spread-title {
+                font-size: 48px;
+            }
+
+            .header h1 {
+                font-size: 56px;
+            }
+
+            .spread-number {
+                font-size: 120px;
+            }
+
+            .spread-content {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="magazine">
+        <div class="header">
+            <h1>Morning Edition</h1>
+            <div class="date">Friday, June 5, 2026</div>
+            <div class="tagline">Your Daily AI News Curated</div>
+        </div>
+
+        <div class="spreads">
+            <div class="spread spread-hero">
+    <div class="spread-number">01</div>
+    <div class="spread-title">Creative Code Generation: The Future of Development</div>
+    <div class="spread-content">Software Engineering</div>
+    <div class="spread-meta">
+        <span class="spread-source">Latent Space</span>
+    </div>
+</div>
+<div class="spread spread-midnight">
+    <div class="spread-number">02</div>
+    <div class="spread-title">Open Source AI Framework Reaches 1M Downloads</div>
+    <div class="spread-content">Unique</div>
+    <div class="spread-meta">
+        <span class="spread-source">The Rundown AI</span>
+    </div>
+</div>
+<div class="spread spread-alert">
+    <div class="spread-number">03</div>
+    <div class="spread-title">Automation Tools Powered by Recent AI Breakthroughs</div>
+    <div class="spread-content">Unique</div>
+    <div class="spread-meta">
+        <span class="spread-source">The Rundown AI</span>
+    </div>
+</div>
+<div class="spread spread-terminal">
+    <div class="spread-number">04</div>
+    <div class="spread-title">Building Production-Grade AI Tools</div>
+    <div class="spread-content">Software Engineering</div>
+    <div class="spread-meta">
+        <span class="spread-source">The Pragmatic Engineer</span>
+    </div>
+</div>
+<div class="spread spread-academic">
+    <div class="spread-number">05</div>
+    <div class="spread-title"><span class="drop-cap">A</span>I-Powered Privacy Tools Transform Data Protection</div>
+    <div class="spread-content">Business</div>
+    <div class="spread-meta">
+        <span class="spread-source">TechCrunch AI</span>
+    </div>
+</div>
+<div class="spread spread-stat">
+    <div class="spread-number">06</div>
+    <div class="spread-title"><div class="stat-highlight">600%</div><div style="font-size: 28px;">Privacy-First Language Models Gain Traction</div></div>
+    <div class="spread-content">Software Engineering</div>
+    <div class="spread-meta">
+        <span class="spread-source">The Pragmatic Engineer</span>
+    </div>
+</div>
+<div class="spread spread-vibrant">
+    <div class="spread-number">07</div>
+    <div class="spread-title">DeepMind Releases New Research on Neural Networks</div>
+    <div class="spread-content">AI Insiders</div>
+    <div class="spread-meta">
+        <span class="spread-source">Google DeepMind News</span>
+    </div>
+</div>
+<div class="spread spread-minimal">
+    <div class="spread-number">08</div>
+    <div class="spread-title">Developers Embrace AI-Assisted Coding Workflows</div>
+    <div class="spread-content">Business</div>
+    <div class="spread-meta">
+        <span class="spread-source">VentureBeat</span>
+    </div>
+</div>
+<div class="spread spread-column">
+    <div class="spread-number">09</div>
+    <div class="spread-title">API Design Best Practices for AI Services</div>
+    <div class="spread-content">AI Insiders</div>
+    <div class="spread-meta">
+        <span class="spread-source">OpenAI Blog</span>
+    </div>
+</div>
+<div class="spread spread-tilted">
+    <div class="spread-number">10</div>
+    <div class="spread-title">Weird Science: AI Discovers New Materials</div>
+    <div class="spread-content">Software Engineering</div>
+    <div class="spread-meta">
+        <span class="spread-source">Latent Space</span>
+    </div>
+</div>
+<div class="spread spread-neon">
+    <div class="spread-number">11</div>
+    <div class="spread-title">Claude Updates: New Improvements to AI Assistant</div>
+    <div class="spread-content">AI Insiders</div>
+    <div class="spread-meta">
+        <span class="spread-source">OpenAI Blog</span>
+    </div>
+</div>
+<div class="spread spread-vintage">
+    <div class="spread-number">12</div>
+    <div class="spread-title">Machine Learning Framework Wars: Which Will Win?</div>
+    <div class="spread-content">Business</div>
+    <div class="spread-meta">
+        <span class="spread-source">TechCrunch AI</span>
+    </div>
+</div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-title">End of Edition</div>
+            <p>Next edition: Sat, Jun 6</p>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.5;">Generated on 6/5/2026, 11:46:30 AM</p>
+        </div>
+    </div>
+</body>
+</html>

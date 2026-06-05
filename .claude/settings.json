@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "HOUR=$(date +%H); if [ \"$HOUR\" = \"07\" ]; then LOCK=\"/tmp/morning-edition-$(date +%Y-%m-%d).lock\"; if [ ! -f \"$LOCK\" ]; then node /home/user/curator.js && touch \"$LOCK\"; fi; fi",
+            "statusMessage": "Morning Edition: checking if it's time to curate..."
+          }
+        ]
+      }
+    ]
+  }
+}
