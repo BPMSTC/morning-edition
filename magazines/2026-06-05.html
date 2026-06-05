@@ -105,16 +105,84 @@
             margin-bottom: 40px;
         }
 
+        .spread-description {
+            font-size: 20px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
         .spread-meta {
             font-size: 18px;
-            opacity: 0.7;
+            opacity: 0.8;
             display: flex;
-            gap: 30px;
-            margin-top: 60px;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
         }
 
         .spread-source {
             font-weight: 600;
+            font-size: 16px;
+        }
+
+        .spread-link {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .spread-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .article-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-image-small {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .article-image-sidebar {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 20px;
+        }
+
+        .spread-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 80px 60px;
+            border-radius: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .spread-category {
@@ -331,108 +399,285 @@
         </div>
 
         <div class="spreads">
-            <div class="spread spread-hero">
-    <div class="spread-number">01</div>
-    <div class="spread-title">Creative Code Generation: The Future of Development</div>
-    <div class="spread-content">Software Engineering</div>
-    <div class="spread-meta">
-        <span class="spread-source">Latent Space</span>
+            <div class="spread spread-hero" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFhMWEyZSIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzY0ZDdmZiIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UaGUgUHJhZ21hdGljIEVuZ2luZWVyPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzY0ZDdmZiIgb3BhY2l0eT0iMC40IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Tb2Z0d2FyZSBFbmdpbmVlcmluZzwvdGV4dD4KPC9zdmc+'); background-size: cover; background-position: center;">
+        <div class="spread-overlay">
+            <div class="spread-number">01</div>
+            <div class="spread-title">The Pulse: Did capacity shortages turn Anthropic hostile to devs?</div>
+            <p class="spread-description"># The Pragmatic Engineer: Anthropic&#039;s Capacity Crunch Theory</p>
+<p class="spread-description">The claim: Anthropic deliberately degraded Claude&#039;s performance and revoked API features (specifically Claude Code access for some paid tiers) not for safety or product reasons, but because they&#039;re maxed out on compute. The theory goes that their SpaceX deal wasn&#039;t about expansion—it was damage control for underpublicized capacity constraints. Devs noticed the downgrades hit harder than typical model iterations, and the access removals looked arbitrary rather than strategic. If true, this is Anthropic rationing a scarce resource while keeping customers in the dark about why.</p>
+<p class="spread-description">What actually matters: This matters only if the constraint is real and persistent. If Anthropic has genuine capacity issues, it exposes a critical vulnerability in the AI infrastructure race—you can&#039;t out-train your way to dominance if you can&#039;t actually serve your customers. It would also reframe recent decisions (like the o1 token limits and inconsistent feature rollouts) as resource management masquerading as product strategy. That&#039;s deceptive, not innovative. The SpaceX partnership becomes less &quot;Anthropic scales&quot; and more &quot;Anthropic got caught short.&quot; For the field: if a top-tier lab is quietly constraint-limited while publicly talking about capability improvements, the bottleneck isn&#039;t intelligence—it&#039;s power and cooling. That&#039;s an unglamorous but critical detail about where AI development actually sits right now.</p>
+            <div class="spread-meta">
+                <span class="spread-source">The Pragmatic Engineer</span>
+                <a href="https://blog.pragmaticengineer.com/the-pulse-did-capacity-shortages-turn-anthropic-hostile-to-devs/" target="_blank" class="spread-link">Read →</a>
+            </div>
+        </div>
     </div>
-</div>
 <div class="spread spread-midnight">
-    <div class="spread-number">02</div>
-    <div class="spread-title">Open Source AI Framework Reaches 1M Downloads</div>
-    <div class="spread-content">Unique</div>
-    <div class="spread-meta">
-        <span class="spread-source">The Rundown AI</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFjMjgzMyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZW50dXJlQmVhdDwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmMGIyN2EiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnVzaW5lc3M8L3RleHQ+Cjwvc3ZnPg==" alt="Claude Code costs up to $200 a month. Goose does the same thing for free." class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">02</div>
+            <div class="spread-title">Claude Code costs up to $200 a month. Goose does the same thing for free.</div>
+            <p class="spread-description"># Claude Code&#039;s $200/Month Price Tag Meets Reality Check</p>
+<p class="spread-description">Anthropic is charging $20–$200/month for Claude Code, an autonomous coding agent that writes, debugs, and deploys software. Goose, an open-source alternative built on Claude&#039;s own API, does the same work for free. This is less &quot;news&quot; and more &quot;inevitable market correction&quot;—Claude Code&#039;s pricing assumes developers will pay a premium for convenience, but the convenience evaporates when someone else packages the same underlying capability without the markup. Anthropic&#039;s real leverage here is API access and brand trust, not some proprietary breakthrough. If they wanted to compete on price, they could. They clearly don&#039;t.</p>
+<p class="spread-description">The actual story: coding agents remain genuinely useful but not magic. They handle boilerplate, catch obvious bugs, and accelerate junior developer work. They also hallucinate, need careful prompting, and require human code review to avoid shipping garbage. The $200 tier presumably includes higher rate limits and priority support—features that matter if you&#039;re shipping production code at scale, but feel absurd if you&#039;re just automating your side project. Goose&#039;s existence proves the market will bifurcate: enterprises with real deployment needs might pay for managed solutions with guarantees; everyone else will fork the open-source version or call the Claude API directly. Anthropic betting on the former while ignoring the latter is a reasonable business decision that doesn&#039;t actually move the field forward—it just taxes developers for convenience.</p>
+            <div class="spread-meta">
+                <span class="spread-source">VentureBeat</span>
+                <a href="https://venturebeat.com/infrastructure/claude-code-costs-up-to-usd200-a-month-goose-does-the-same-thing-for-free" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-alert">
-    <div class="spread-number">03</div>
-    <div class="spread-title">Automation Tools Powered by Recent AI Breakthroughs</div>
-    <div class="spread-content">Unique</div>
-    <div class="spread-meta">
-        <span class="spread-source">The Rundown AI</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://news.mit.edu/sites/default/files/images/202606/MIT-ChartNet-01-press.jpg" alt="MIT researchers teach AI models to interpret charts" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">03</div>
+            <div class="spread-title">MIT researchers teach AI models to interpret charts</div>
+            <p class="spread-description">**The News:** MIT researchers built ChartNet, a dataset of 1+ million synthetic charts with annotated visual, numerical, and textual metadata, to train vision-language models to actually read graphs and charts. They generated the scale through augmentation—taking seed charts and algorithmically creating variants. The motivation is straightforward: current VLMs hallucinate or misread financial charts, and enterprises want reliable AI summaries of market data.</p>
+<p class="spread-description">**Why it matters / doesn&#039;t:** This is genuinely useful plumbing work. Chart interpretation is a real bottleneck for enterprise AI applications—your LLM can write fluently about data it can&#039;t actually see. The novelty here isn&#039;t conceptual (synthetic data + augmentation is standard), but the specificity is the point: a purpose-built dataset beats hoping your general-purpose model will figure it out. The weakness: we don&#039;t know how well models trained on this actually perform on real-world charts they haven&#039;t seen, or whether the synthetic augmentations capture the weird edge cases that kill production systems (rotated text, overlapping elements, non-standard color schemes). The researchers wisely didn&#039;t oversell with benchmarks we can&#039;t verify, which is rare enough to note. This is the kind of incremental, dataset-heavy work that makes AI systems marginally more reliable without being flashy—exactly what most enterprise applications need.</p>
+            <div class="spread-meta">
+                <span class="spread-source">MIT News AI</span>
+                <a href="https://news.mit.edu/2026/mit-researchers-teach-ai-models-to-interpret-charts-0603" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-terminal">
-    <div class="spread-number">04</div>
-    <div class="spread-title">Building Production-Grade AI Tools</div>
-    <div class="spread-content">Software Engineering</div>
-    <div class="spread-meta">
-        <span class="spread-source">The Pragmatic Engineer</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFjMjgzMyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZW50dXJlQmVhdDwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmMGIyN2EiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnVzaW5lc3M8L3RleHQ+Cjwvc3ZnPg==" alt="Railway secures $100 million to challenge AWS with AI-native cloud infrastructure" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">04</div>
+            <div class="spread-title">Railway secures $100 million to challenge AWS with AI-native cloud infrastructure</div>
+            <p class="spread-description"># Railway&#039;s $100M Bet: Developer Experience, Not Magic</p>
+<p class="spread-description">Railway just raised $100M to build infrastructure that handles AI workloads better than AWS&#039;s generalist offering. The pitch: their platform auto-scales compute, manages dependencies, and deploys models without the DevOps theater that makes AWS painful for ML teams. They&#039;ve already got 2M developers because they&#039;ve focused obsessively on reducing friction—no marketing spend, just a product that doesn&#039;t suck. This round signals that the market sees real money in the &quot;actually usable cloud&quot; layer, which AWS dominates through inertia, not excellence. Whether Railway can convert casual users into paying customers (the harder problem) remains genuinely unresolved, but the market appetite for alternatives to AWS&#039;s labyrinthine pricing and setup is real.</p>
+<p class="spread-description">The field moves forward insofar as competitive pressure on cloud infrastructure is always good, especially if Railway forces AWS to streamline its AI tooling. The ethical story here is thin—this is capital allocation toward a product, not a systemic risk. What matters is whether their execution matches the hype: can they actually handle enterprise-scale workloads without collapsing under load, and can they stay independent long enough to matter, or does Google/Microsoft acquire them in 18 months? That&#039;s the real question. Skip the &quot;disruption&quot; framing; this is competent infrastructure trying to eat AWS&#039;s lunch in one specific, annoying category.</p>
+            <div class="spread-meta">
+                <span class="spread-source">VentureBeat</span>
+                <a href="https://venturebeat.com/infrastructure/railway-secures-usd100-million-to-challenge-aws-with-ai-native-cloud" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-academic">
-    <div class="spread-number">05</div>
-    <div class="spread-title"><span class="drop-cap">A</span>I-Powered Privacy Tools Transform Data Protection</div>
-    <div class="spread-content">Business</div>
-    <div class="spread-meta">
-        <span class="spread-source">TechCrunch AI</span>
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzZlMmYxYSIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YxOTQ4YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbXBvcnQgQUk8L3RleHQ+CiAgPHRleHQgeD0iNDAwIiB5PSIyMzAiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjZjE5NDhhIiBvcGFjaXR5PSIwLjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJlc2VhcmNoICYgUG9saWN5PC90ZXh0Pgo8L3N2Zz4=" alt="Import AI 459: AI oversight is difficult; scaling laws for protein folding models; and pricing the extinction risk of AI systems" class="article-image" />
+        <div class="spread-number">05</div>
+        <div class="spread-title"><span class="drop-cap">I</span>mport AI 459: AI oversight is difficult; scaling laws for protein folding models; and pricing the extinction risk of AI systems</div>
+        <p class="spread-description"># Import AI 459</p>
+<p class="spread-description">Three bets on what&#039;s actually happening in AI right now, none of them comfortable. First: oversight of frontier models is hitting hard walls—not because we lack frameworks but because economic incentives and technical capabilities are misaligned. The piece presumably covers why monitoring what these systems do at scale is genuinely harder than the policy rhetoric suggests, without the usual throat-clearing about &quot;multi-stakeholder approaches.&quot; Second, protein folding models follow the same scaling laws as language models, meaning raw compute still buys you better predictions. That&#039;s straightforward and useful; it tells researchers where to allocate resources and tells funding bodies what to expect. Third, someone&#039;s actually trying to price tail risk—putting numbers on &quot;what&#039;s an AI extinction scenario worth in expected value&quot;—which is either rigorous decision-making or the most elaborate form of unfalsifiable financial theater, depending on the methodology. Probably both.</p>
+<p class="spread-description">What moves: The protein folding work is real progress—scaling laws are predictive tools, not philosophy. The oversight piece likely diagnoses an actual problem instead of describing solutions that don&#039;t work at production scale. The pricing work is interesting mainly as a forcing function: once you try to quantify extinction risk, you see how little consensus exists on likelihoods and the absurdity becomes visible. What doesn&#039;t move: governance theater, which this newsletter is admirably uninterested in. Worth reading for the parts that acknowledge difficulty instead of resolving it.</p>
+        <div class="spread-meta">
+            <span class="spread-source">Import AI</span>
+            <a href="https://jack-clark.net/2026/06/01/import-ai-459-ai-oversight-is-difficult-scaling-laws-for-protein-folding-models-and-pricing-the-extinction-risk-of-ai-systems/" target="_blank" class="spread-link">Read full article →</a>
+        </div>
     </div>
-</div>
 <div class="spread spread-stat">
-    <div class="spread-number">06</div>
-    <div class="spread-title"><div class="stat-highlight">600%</div><div style="font-size: 28px;">Privacy-First Language Models Gain Traction</div></div>
-    <div class="spread-content">Software Engineering</div>
-    <div class="spread-meta">
-        <span class="spread-source">The Pragmatic Engineer</span>
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFhM2E1YyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2FlZDZmMSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NSVQgTmV3cyBBSTwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNhZWQ2ZjEiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVzZWFyY2ggJiBBY2FkZW1pYTwvdGV4dD4KPC9zdmc+" alt="Teaching AI agents to ask better questions by playing “Battleship”" class="article-image-small" />
+        <div class="spread-number">06</div>
+        <div class="stat-highlight">06</div>
+        <div class="spread-title">Teaching AI agents to ask better questions by playing “Battleship”</div>
+        <p class="spread-description"># MIT Researchers Find Battleship Teaches AI Agents Information-Theoretic Discipline</p>
+<p class="spread-description">MIT researchers trained AI agents to play Battleship—the board game where you sink ships by guessing coordinates—and discovered that smaller models with proper training beat larger ones at the task while burning a fraction of the compute. The game forces agents to minimize uncertainty efficiently: each query either eliminates grid cells or narrows ship positions, creating hard constraints on what constitutes a &quot;good&quot; question. The researchers used this as a training regime and found that a small model trained this way outperformed GPT-3.5-scale models on the task at roughly 1% of the computational cost. Battleship works here because it&#039;s a closed, measurable problem where you can objectively score question quality—no hand-waving required.</p>
+<p class="spread-description">This matters because current LLMs are notoriously bad at strategic information-gathering; they&#039;ll ask redundant or tangential questions when a smarter query exists. Training on games with hard information-theoretic feedback loops could genuinely improve agent behavior in domains where question-asking matters—customer support, scientific hypothesis design, debugging. The practical upside is real: if you can get comparable or better performance from smaller models through the right training approach, that&#039;s not a rounding error in ops costs. The caveat: Battleship&#039;s perfect information and discrete state space are luxuries most real problems don&#039;t have. Still, this is the kind of incremental, reproducible research that actually moves capabilities forward rather than just scaling existing approaches into the ground.</p>
+        <div class="spread-meta">
+            <span class="spread-source">MIT News AI</span>
+            <a href="https://news.mit.edu/2026/teaching-ai-agents-ask-better-questions-playing-battleship-0603" target="_blank" class="spread-link">Learn more →</a>
+        </div>
     </div>
-</div>
 <div class="spread spread-vibrant">
-    <div class="spread-number">07</div>
-    <div class="spread-title">DeepMind Releases New Research on Neural Networks</div>
-    <div class="spread-content">AI Insiders</div>
-    <div class="spread-meta">
-        <span class="spread-source">Google DeepMind News</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,format=auto,onerror=redirect,quality=80/uploads/publication/thumbnail/4d03390d-2481-4299-b949-ffd8b38b4c38/landscape_newbanner.png?v=1780660431" alt="Microsoft paves its own AI way at Build" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">07</div>
+            <div class="spread-title">Microsoft paves its own AI way at Build</div>
+            <p class="spread-description"># Microsoft Paves Its Own AI Way at Build</p>
+<p class="spread-description">The headline promises substance but the article itself is a ghost—just a title floating above The Rundown&#039;s newsletter signup page. There&#039;s no actual reporting here, no details about what Microsoft announced, no analysis of technical direction or product strategy. This is marketing masquerading as news. That said, the pattern across Microsoft&#039;s recent moves is worth noting: they&#039;re systematically reducing OpenAI dependency through in-house model development (Phi series), Copilot customization layers, and integration across their entire enterprise stack. It&#039;s a rational hedge against a supplier that could theoretically be acquired, regulated, or simply decide to prioritize consumer products over corporate licensing. The practical effect: enterprise customers get less lock-in to a single frontier model and more flexibility to swap components. That matters more than whatever Build announcements got buried under promotional copy.</p>
+<p class="spread-description">What&#039;s actually happening is less flashy than &quot;paving its own way.&quot; Microsoft is doing what any $3 trillion company would do—building in-house alternatives to reduce risk while maintaining optionality. They&#039;re not racing to beat OpenAI at frontier capabilities; they&#039;re building the pipes that make it irrelevant which LLM sits in the middle. For technical builders, this means the tooling ecosystem around enterprise AI is finally fragmenting past the &quot;everyone uses GPT-4 API&quot; monoculture. That&#039;s genuinely useful. But if you&#039;re looking for architectural innovation or surprising technical direction from this piece, you&#039;re reading the wrong source.</p>
+            <div class="spread-meta">
+                <span class="spread-source">The Rundown AI</span>
+                <a href="https://www.therundown.ai/" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-minimal">
-    <div class="spread-number">08</div>
-    <div class="spread-title">Developers Embrace AI-Assisted Coding Workflows</div>
-    <div class="spread-content">Business</div>
-    <div class="spread-meta">
-        <span class="spread-source">VentureBeat</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFhMWEyZSIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzY0ZDdmZiIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UaGUgUHJhZ21hdGljIEVuZ2luZWVyPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzY0ZDdmZiIgb3BhY2l0eT0iMC40IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Tb2Z0d2FyZSBFbmdpbmVlcmluZzwvdGV4dD4KPC9zdmc+" alt="The Pulse: Forward deployed engineering heats up again" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">08</div>
+            <div class="spread-title">The Pulse: Forward deployed engineering heats up again</div>
+            <p class="spread-description"># Forward Deployed Engineers: When Consulting Gets a Rebranding</p>
+<p class="spread-description">The big three—Google, OpenAI, Anthropic—are aggressively hiring &quot;forward deployed engineers&quot; (FDEs), a role that&#039;s basically senior consulting dressed in engineering clothes. These aren&#039;t research positions or core infrastructure builders. They&#039;re customer-facing engineers who embed at enterprise clients, translate AI capabilities into business problems, and wrangle implementations that the off-the-shelf product can&#039;t quite handle. The demand spike is real: it&#039;s the fastest-growing hiring category at these companies right now, which tells you something about where the actual bottleneck is—not model capability, but the gap between what the models *can* do and what enterprises *can deploy*.</p>
+<p class="spread-description">This is honest-to-god business-critical work, and it matters for exactly one unsexy reason: it determines which companies actually extract value from their models versus which ones ship demos that gather dust. But let&#039;s be clear about what&#039;s happening: FDEs are the human patch for products that aren&#039;t quite ready for prime time. If OpenAI&#039;s API was a polished product that enterprises could self-serve, you wouldn&#039;t need dozens of embedded engineers holding hands through integrations. The hiring surge reflects genuine customer friction, not forward momentum. It&#039;s traction, sure, but it&#039;s expensive traction—and that&#039;s a feature, not a bug, for vendors who profit from the labor anyway.</p>
+            <div class="spread-meta">
+                <span class="spread-source">The Pragmatic Engineer</span>
+                <a href="https://blog.pragmaticengineer.com/the-pulse-forward-deployed-engineering-heats-up-again/" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-column">
-    <div class="spread-number">09</div>
-    <div class="spread-title">API Design Best Practices for AI Services</div>
-    <div class="spread-content">AI Insiders</div>
-    <div class="spread-meta">
-        <span class="spread-source">OpenAI Blog</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://techcrunch.com/wp-content/uploads/2025/07/IMG_2376-rotated.jpeg?resize=900,1200" alt="The most interesting startups right now want to get you off your phone" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">09</div>
+            <div class="spread-title">The most interesting startups right now want to get you off your phone</div>
+            <p class="spread-description"># The Anti-Phone Startup Wave Is Real, But Let&#039;s Not Oversell the Rebellion</p>
+<p class="spread-description">There&#039;s genuine product momentum behind the &quot;together tech&quot; trend—Mirror&#039;s Board raising capital specifically for in-person gaming, cyberdecks moving from niche hobby to actual consumer interest—but this isn&#039;t a seismic shift in how people allocate attention or capital. These are cottage industries capturing the aesthetic exhaustion of smartphone-native life. They work because they&#039;re *actual alternatives* (physical presence, tactile interaction, social coordination that doesn&#039;t run through an algorithm), not because they&#039;re leveraging some new technology insight. The real tell: founders are raising money by explicitly *not* chasing the AI fundraising arms race. That&#039;s contrarian positioning, which is itself a form of marketing.</p>
+<p class="spread-description">The harder question buried here is whether this represents genuine market demand or just the wealthy&#039;s periodic performative rejection of technology they still depend on. A $500+ cyberdeck novelty and a social gaming startup aren&#039;t solving for the structural incentives that keep people doom-scrolling—they&#039;re serving people who can afford to opt out. Anthropic&#039;s IPO plans and Alphabet&#039;s $80 billion spend aren&#039;t going anywhere because Board exists. What&#039;s actually interesting is that founders *noticed* this gap and acted on it. Whether it scales beyond niche adoption depends entirely on whether the unit economics work at price points regular people will pay.</p>
+            <div class="spread-meta">
+                <span class="spread-source">TechCrunch AI</span>
+                <a href="https://techcrunch.com/video/the-most-interesting-startups-right-now-want-to-get-you-off-your-phone/" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-tilted">
-    <div class="spread-number">10</div>
-    <div class="spread-title">Weird Science: AI Discovers New Materials</div>
-    <div class="spread-content">Software Engineering</div>
-    <div class="spread-meta">
-        <span class="spread-source">Latent Space</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFjMjgzMyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UZWNoQ3J1bmNoIEFJPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC40IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdXNpbmVzczwvdGV4dD4KPC9zdmc+" alt="AirTrunk commits $30B to build 5GW of AI data centers in India" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">10</div>
+            <div class="spread-title">AirTrunk commits $30B to build 5GW of AI data centers in India</div>
+            <p class="spread-description"># AirTrunk&#039;s $30B India Bet: Following the Money to Cheaper Power</p>
+<p class="spread-description">AirTrunk, an Australian operator, is committing $30 billion to build 5GW of AI inference capacity in India. That&#039;s not trivial—5GW is roughly the power consumption of a mid-sized country&#039;s data center footprint, enough to run serious model serving at scale. The play is straightforward: India has cheaper electricity, cheaper land, and a government actively courting data center investment. AirTrunk gets to undercut Western hosting costs while India gets hard foreign currency and infrastructure. This is less a technological breakthrough and more a rational response to the brutal economics of running GPUs—power costs dominate the margin, so you chase geography. Similar bets are already underway in the Middle East and Southeast Asia.</p>
+<p class="spread-description">What actually matters: this accelerates *inference*, not training. You&#039;re not getting frontier model development in Bangalore; you&#039;re getting the commodity stuff—serving Claude, GPT-4, open-source models to users who don&#039;t need sub-100ms latency. That&#039;s a real market (trillions in inference queries annually), but it&#039;s structurally different from the training race, which remains geographically concentrated near cheap power *and* semiconductor supply chains. The genuine implication: if inference becomes a commodity service in low-cost jurisdictions, Western AI companies&#039; moats compress—they own the model weights, not the infrastructure margin. Expect this pattern to repeat until power arbitrage exhausts itself.</p>
+            <div class="spread-meta">
+                <span class="spread-source">TechCrunch AI</span>
+                <a href="https://techcrunch.com/2026/06/05/airtrunk-commits-30b-to-build-5gw-of-ai-data-centers-in-india/" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-neon">
-    <div class="spread-number">11</div>
-    <div class="spread-title">Claude Updates: New Improvements to AI Assistant</div>
-    <div class="spread-content">AI Insiders</div>
-    <div class="spread-meta">
-        <span class="spread-source">OpenAI Blog</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFjMjgzMyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZW50dXJlQmVhdDwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmMGIyN2EiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnVzaW5lc3M8L3RleHQ+Cjwvc3ZnPg==" alt="Listen Labs raises $69M after viral billboard hiring stunt to scale AI customer interviews" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">11</div>
+            <div class="spread-title">Listen Labs raises $69M after viral billboard hiring stunt to scale AI customer interviews</div>
+            <p class="spread-description"># Listen Labs Raises $69M on the Back of a $5K Billboard Stunt</p>
+<p class="spread-description">Listen Labs, an AI startup building tools to automatically conduct and analyze customer interviews, just closed a Series B at a $280M valuation after a viral hiring billboard in San Francisco. The actual product: software that transcribes, summarizes, and extracts insights from customer conversations using LLMs—basically automating what researchers and product teams currently do manually or with cheaper tools like Otter.ai. The funding is real; the billboard (which mimicked a job posting to snag engineer attention) was a marketing tactic that worked. Wahlforss, the CEO, understood his constraint clearly: he couldn&#039;t outbid Zuckerberg, so he bought attention instead. The $5K spend generating VC interest is the real story, not the interview automation itself.</p>
+<p class="spread-description">On substance: Listen Labs is doing useful work in a crowded space (transcript analysis isn&#039;t novel), but the valuation jump suggests investors are betting on execution and market timing rather than technical moat. The company will either become a horizontal productivity tool that gets undercut by Claude/GPT integrations, or it carves out defensibility through domain specificity and better UX. The viral stunt doesn&#039;t change the underlying economics—it just meant the Series B closed faster and at a higher multiple. Worth watching for their retention curves and CAC, not because they&#039;ve moved AI forward, but because their survival tells you something about whether AI interview tools are actually sticky enough to sustain venture returns.</p>
+            <div class="spread-meta">
+                <span class="spread-source">VentureBeat</span>
+                <a href="https://venturebeat.com/technology/listen-labs-raises-usd69m-after-viral-billboard-hiring-stunt-to-scale-ai" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="spread spread-vintage">
-    <div class="spread-number">12</div>
-    <div class="spread-title">Machine Learning Framework Wars: Which Will Win?</div>
-    <div class="spread-content">Business</div>
-    <div class="spread-meta">
-        <span class="spread-source">TechCrunch AI</span>
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFjMjgzMyIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YwYjI3YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZW50dXJlQmVhdDwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmMGIyN2EiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnVzaW5lc3M8L3RleHQ+Cjwvc3ZnPg==" alt="Salesforce rolls out new Slackbot AI agent as it battles Microsoft and Google in workplace AI" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">12</div>
+            <div class="spread-title">Salesforce rolls out new Slackbot AI agent as it battles Microsoft and Google in workplace AI</div>
+            <p class="spread-description"># Salesforce Rebuilt Slackbot Into a Competent Agent—Finally</p>
+<p class="spread-description">Salesforce gutted Slackbot and replaced it with an actual agentic system that can query Salesforce databases, draft documents, and execute actions across connected apps. This is table stakes, not innovation—Microsoft&#039;s been shipping Copilot agents in Teams for months, and Google has similar plays in Workspace. The real difference here is that Slack&#039;s 750,000+ enterprise users suddenly have an AI assistant with direct access to their company data. Salesforce isn&#039;t claiming this is the first; they&#039;re claiming it&#039;s *theirs*, and that matters because they own the platform where the work happens. The agent uses Claude (Anthropic&#039;s model), runs on Salesforce&#039;s infrastructure, and presumably learned from millions of Slack message patterns—though Salesforce is characteristically vague about the training data.</p>
+<p class="spread-description">The honest assessment: this is competent execution of a solved problem. The field doesn&#039;t move forward; Salesforce catches up. The legitimate concern isn&#039;t hype—it&#039;s that Slack now sits at the nexus of enterprise communication and action. If this agent hallucinates or misinterprets context, it can draft incorrect emails or trigger unintended workflows. Salesforce controls the visibility into how decisions get made. That&#039;s not a governance issue; that&#039;s just leverage, and it&#039;s worth acknowledging plainly.</p>
+            <div class="spread-meta">
+                <span class="spread-source">VentureBeat</span>
+                <a href="https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
     </div>
 </div>
+<div class="spread spread-floating">
+        <div class="card">
+            <img src="https://lh3.googleusercontent.com/myGF2ComebnEQEBnWFaEuzzYPERNzNfAwfeGpoevFpG_XUjuwukO7PaAajPYOdIJWv-oqsUGh7GvlFrviUte2DWryEZIZB4WQa3Q9NtdUq7jvJJR=w1200-h630-n-nu-rw" alt="Our latest AI breakthroughs and updates from the lab" class="card-image" />
+            <div class="spread-number">13</div>
+            <div class="spread-title">Our latest AI breakthroughs and updates from the lab</div>
+            <p class="spread-description"># DeepMind&#039;s May 2026 Dump: Mostly Science Apps, One Genuinely Wild Model</p>
+<p class="spread-description">Google DeepMind just published a 17-page announcement of ~30 projects, nearly all variations on the same theme: take existing Gemini models, bolt them onto domain-specific problems (disease discovery, climate prediction, robotics, aging research), ship it. The actual model releases are thin: Gemini OmniMod (which appears to be multimodal inference, not a new capability tier), Gemini 3.5 (incremental), and Antigravity 2.0 (no technical details—possibly a physics simulation tool?). The real meat is distributed training (Decoupled DiLoCo) and Gemini Robotics-ER 1.6, which claims &quot;enhanced embodied reasoning&quot; for physical tasks—this actually matters if true, since embodied reasoning remains genuinely hard. Everything else is application-layer work: using AI to mine drug compounds, predict hurricanes, understand disease mechanisms. Useful? Sure. Novel? Not particularly.</p>
+<p class="spread-description">The subtext is more interesting than the headlines. DeepMind is flooding the zone with use-case validation—essentially running a massive A/B test on which applications stick in the press. Notice the heavy biotech focus (ALS, liver fibrosis, aging, genetic screening) and the strategic partnership plays (Singapore, South Korea). This isn&#039;t breakthrough research; it&#039;s market expansion and moat-building. They&#039;re proving Gemini&#039;s value across enough domains that &quot;general-purpose AI&quot; stops being theoretical and becomes a procurement argument. The governance theater (responsibility statements, accelerator programs) is contractual obligation. Skip those paragraphs.</p>
+            <div class="spread-meta">
+                <span class="spread-source">Google DeepMind News</span>
+                <a href="https://deepmind.google/news/" target="_blank" class="spread-link">Read →</a>
+            </div>
+        </div>
+    </div>
+<div class="spread spread-hero" style="background-image: url('https://lh3.googleusercontent.com/myGF2ComebnEQEBnWFaEuzzYPERNzNfAwfeGpoevFpG_XUjuwukO7PaAajPYOdIJWv-oqsUGh7GvlFrviUte2DWryEZIZB4WQa3Q9NtdUq7jvJJR=w1200-h630-n-nu-rw'); background-size: cover; background-position: center;">
+        <div class="spread-overlay">
+            <div class="spread-number">14</div>
+            <div class="spread-title">Our mission is to build AI responsibly to benefit humanity</div>
+            <p class="spread-description"># Google DeepMind&#039;s May 2026 News Dump: Mostly Real Work, Some Theater</p>
+<p class="spread-description">This is a curated highlight reel from Google DeepMind&#039;s actual output over two months, not a single announcement. The substantive bits: Gemini 3.5 and 3.1 Flash (incremental model updates), WeatherNext showing measurable improvement on hurricane prediction, robotics work on embodied reasoning, and a legitimate push into biological applications (ALS, liver disease, aging research). Gemini Omni and &quot;Antigravity 2.0&quot; got top billing, which tells you about marketing priorities—the former is the multimodal model you&#039;d expect, the latter a physics solver that probably does something narrow but useful. The &quot;responsibility &amp; safety&quot; categorization is mostly cover: a content-provenance tool and some government partnerships. This is what working at scale looks like: lots of incremental capability gains in language and vision models, serious but unsexy work in applied science, and enough policy theater to keep regulators happy.</p>
+<p class="spread-description">The field-moving stuff is buried: distributed training resilience (Decoupled DiLoCo) solves a real infrastructure problem, open model releases (Gemma 4) actually matter for the ecosystem, and the biological applications represent the first time LLMs are genuinely accelerating wet-lab discovery instead of just being expensive search engines. The robotics progress is real but still in &quot;can do specific tasks in lab conditions&quot; territory. What&#039;s missing: no breakthrough in reasoning, no solution to hallucination at scale, no genuine efficiency gains (just larger models doing the same work). Skip the opening mission statement—this is a company shipping products and trying to look responsible while doing it.</p>
+            <div class="spread-meta">
+                <span class="spread-source">Google DeepMind News</span>
+                <a href="https://deepmind.google/news/" target="_blank" class="spread-link">Read →</a>
+            </div>
+        </div>
+    </div>
+<div class="spread spread-midnight">
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFhNTI3NiIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzdmYjNkMyIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IdWdnaW5nIEZhY2UgQmxvZzwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM3ZmIzZDMiIG9wYWNpdHk9IjAuNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3BlbiBTb3VyY2UgQUk8L3RleHQ+Cjwvc3ZnPg==" alt="EVA-Bench Data 2.0: 3 Domains, 121 Tools, 213 Scenarios" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">15</div>
+            <div class="spread-title">EVA-Bench Data 2.0: 3 Domains, 121 Tools, 213 Scenarios</div>
+            <p class="spread-description"># EVA-Bench 2.0: Finally, a Tool-Use Benchmark That Isn&#039;t Embarrassingly Small</p>
+<p class="spread-description">Hugging Face released EVA-Bench 2.0, expanding their tool-use evaluation dataset from a joke (previous version was tiny) to something actually useful: 213 scenarios spanning 121 tools across three domains (web APIs, function calls, code execution). This matters because current LLM evals for tool use are pathetic—most benchmarks have &lt;50 scenarios, and models game them easily. EVA-Bench&#039;s scale makes it harder to just memorize your way to good scores. The scenarios include genuine multi-step workflows, which catches a real failure mode: models that can call tools but can&#039;t chain them logically. It&#039;s open-source, so anyone can run it locally without begging for API access or worrying about benchmark contamination from training data.</p>
+<p class="spread-description">The field advancement is real but narrow: this is a competence test, not a breakthrough. It&#039;ll catch which models are actually useful for agent-y tasks versus which ones just talk a good game about function calling. But—and this is the unglamorous truth—even nailing EVA-Bench doesn&#039;t mean your model will work reliably in production, where tools fail, return garbage data, and users ask for things the tool can&#039;t do. This benchmark measures tool literacy, not robustness. Also worth noting: 121 tools is still a rounding error compared to the actual API landscape, so don&#039;t expect perfect transfer to your weird proprietary toolset. Good benchmark. Not a solve.</p>
+            <div class="spread-meta">
+                <span class="spread-source">Hugging Face Blog</span>
+                <a href="https://huggingface.co/blog" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spread spread-alert">
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://www.deeplearning.ai/site-meta.png" alt="China Thwarts Meta’s Agentic Ambition, U.S. Evaluates Upcoming Models, AI Diagnoses Mammograms" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">16</div>
+            <div class="spread-title">China Thwarts Meta’s Agentic Ambition, U.S. Evaluates Upcoming Models, AI Diagnoses Mammograms</div>
+            <p class="spread-description">I appreciate the detailed brief, but I&#039;m hitting a wall here: the article content you&#039;ve provided is mostly image metadata and header text without the actual substantive reporting. I can see headline fragments (Qwen3.7-Max, fine-tuning breaking copyright alignment, AI for mammograms) but not the analysis or details that would let me write something sharp and specific rather than generic.</p>
+<p class="spread-description">What I&#039;d need to deliver the piece you&#039;re asking for:</p>
+<p class="spread-description">- The actual body text on Meta/China (what specifically did China do? Block WhatsApp agents? Something else?)
+- What the &quot;U.S. Evaluates Upcoming Models&quot; section actually says (which models, what evaluation criteria, why does it matter technically?)
+- The mammogram story (accuracy metrics? Clinical trial data? Or just a lab announcement?)
+- Any technical details on the Qwen/Google comparison and the fine-tuning copyright finding</p>
+<p class="spread-description">With those details, I can write something that doesn&#039;t waste your reader&#039;s time. Without them, I&#039;m just riffing on headlines.</p>
+<p class="spread-description">Can you paste the actual article text, or point me to the full piece?</p>
+            <div class="spread-meta">
+                <span class="spread-source">The Batch</span>
+                <a href="https://www.deeplearning.ai/the-batch/tag/the-batch" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spread spread-terminal">
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://tldr.tech/logo-jpg.jpg" alt="Get the most interesting AI stories and breakthroughs delivered in a free daily email." class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">17</div>
+            <div class="spread-title">Get the most interesting AI stories and breakthroughs delivered in a free daily email.</div>
+            <p class="spread-description"># TLDR AI Newsletter Announcement</p>
+<p class="spread-description">This is a newsletter signup page, not actual AI news. TLDR AI claims 920,000 subscribers and promises &quot;the most interesting AI stories and breakthroughs&quot; in a daily five-minute digest. That&#039;s it. There&#039;s no story here—just a marketing funnel for their email list.</p>
+<p class="spread-description">If you&#039;re actually interested in their coverage, the value proposition is speed and curation: someone else filtering the noise. Whether they deliver that depends entirely on their editorial judgment, which isn&#039;t evident from this page. The honest read is that 920,000 subscriptions is either real (they&#039;ve built audience) or inflated (they&#039;re claiming it is). Either way, this is a product launch or growth metric, not a breakthrough in AI. Skip this if you&#039;re looking for actual news.</p>
+            <div class="spread-meta">
+                <span class="spread-source">TLDR AI</span>
+                <a href="https://tldr.tech/ai" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spread spread-academic">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIj4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzZlMmYxYSIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTg1IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iI2YxOTQ4YSIgb3BhY2l0eT0iMC43IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbXBvcnQgQUk8L3RleHQ+CiAgPHRleHQgeD0iNDAwIiB5PSIyMzAiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjZjE5NDhhIiBvcGFjaXR5PSIwLjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJlc2VhcmNoICYgUG9saWN5PC90ZXh0Pgo8L3N2Zz4=" alt="Import AI 458: Reckoning with the future; and a singularity story" class="article-image" />
+        <div class="spread-number">18</div>
+        <div class="spread-title"><span class="drop-cap">I</span>mport AI 458: Reckoning with the future; and a singularity story</div>
+        <p class="spread-description"># Import AI 458: Reckoning with the future; and a singularity story</p>
+<p class="spread-description">Without seeing the full piece, I need to be honest: I can&#039;t write this responsibly. You&#039;ve given me the masthead and framing but not the actual content—which papers, which claims, which &quot;reckoning&quot; we&#039;re talking about. Asking me to extrapolate what Jack Clark covered this week would just be me confabulating details to sound authoritative, which defeats the purpose of sharp, pointed writing.</p>
+<p class="spread-description">If you can paste the article text or key excerpts, I&#039;ll give you exactly what you&#039;re asking for: the actual technical substance, whether it&#039;s real progress or hype, and what matters. That&#039;s how you write for people who already know enough to spot bullshit.</p>
+        <div class="spread-meta">
+            <span class="spread-source">Import AI</span>
+            <a href="https://jack-clark.net/2026/05/26/import-ai-458-reckoning-with-the-future-and-a-singularity-story/" target="_blank" class="spread-link">Read full article →</a>
+        </div>
+    </div>
         </div>
 
         <div class="footer">
             <div class="footer-title">End of Edition</div>
             <p>Next edition: Sat, Jun 6</p>
-            <p style="margin-top: 20px; font-size: 14px; opacity: 0.5;">Generated on 6/5/2026, 11:46:30 AM</p>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.5;">Generated on 6/5/2026, 12:35:48 PM</p>
         </div>
     </div>
 </body>

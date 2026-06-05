@@ -1,6 +1,18 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { load as cheerioLoad } from "cheerio";
+import Anthropic from "@anthropic-ai/sdk";
+
+// Load .env if present (local dev). GitHub Actions uses repo secrets directly.
+const __envPath = new URL(".env", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
+if (fs.existsSync(__envPath)) {
+  const envVars = fs.readFileSync(__envPath, "utf8").split("\n");
+  for (const line of envVars) {
+    const [key, ...rest] = line.split("=");
+    if (key && rest.length) process.env[key.trim()] = rest.join("=").trim();
+  }
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,13 +29,15 @@ const SOURCES = [
   },
   {
     name: "TechCrunch AI",
-    url: "https://techcrunch.com/tag/artificial-intelligence/",
+    url: "https://techcrunch.com/category/artificial-intelligence/feed/",
     category: "Business",
+    type: "rss",
   },
   {
     name: "VentureBeat",
-    url: "https://venturebeat.com/ai/",
+    url: "https://venturebeat.com/category/ai/feed/",
     category: "Business",
+    type: "rss",
   },
   {
     name: "OpenAI Blog",
@@ -72,99 +86,154 @@ const SOURCES = [
   },
 ];
 
-async function fetchStories() {
+async function fetchHtmlSource(source) {
+  const response = await fetch(source.url, {
+    headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const html = await response.text();
+  return extractStories(html, source);
+}
+
+async function fetchRssSource(source) {
+  const response = await fetch(source.url, {
+    headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const xml = await response.text();
+  const $ = cheerioLoad(xml, { xmlMode: true });
   const stories = [];
-
-  for (const source of SOURCES) {
-    try {
-      console.log(`Fetching from ${source.name}...`);
-      const response = await fetch(source.url, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        },
+  $("item").slice(0, 5).each((_, el) => {
+    const $el = $(el);
+    const title = $el.find("title").text().trim();
+    const url =
+      $el.find("link").text().trim() ||
+      $el.find("guid").text().trim();
+    const rawDesc = $el.find("description").text()
+      .replace(/<!\[CDATA\[|\]\]>/g, "")
+      .replace(/<[^>]+>/g, "")
+      .trim()
+      .slice(0, 300);
+    if (title && url && url.startsWith("http")) {
+      stories.push({
+        title,
+        description: rawDesc || `Article from ${source.name}`,
+        url,
+        source: source.name,
+        category: source.category,
+        timestamp: new Date(),
+        image: "",
+        relevanceScore: 0,
       });
-
-      if (!response.ok) {
-        console.error(`Failed to fetch ${source.name}: ${response.status}`);
-        continue;
-      }
-
-      const html = await response.text();
-      const sourceStories = extractStories(html, source);
-      stories.push(...sourceStories);
-    } catch (error) {
-      console.error(`Error fetching ${source.name}:`, error.message);
     }
-  }
-
+  });
   return stories;
 }
 
-function extractStories(html, source) {
+async function fetchStories() {
   const stories = [];
+  const health = {};
 
-  // Extract articles using common patterns with title, description, and URL
-  const articlePatterns = [
-    // Generic article pattern: h2/h3 followed by paragraph
-    /<(?:h[2-3]|a)[^>]*href="([^"]+)"[^>]*>([^<]+)<\/(?:h[2-3]|a)>[\s\S]{0,300}?<p[^>]*>([^<]{10,300})/gi,
-    // Article with data attributes
-    /<article[^>]*>[\s\S]{0,2000}?<(?:h[2-3]|a)[^>]*href="([^"]+)"[^>]*>([^<]+)<\/(?:h[2-3]|a)>[\s\S]{0,500}?<p[^>]*>([^<]{10,300})/gi,
-  ];
-
-  let count = 0;
-  for (const pattern of articlePatterns) {
-    if (count >= 5) break;
-    let match;
-    while ((match = pattern.exec(html)) !== null && count < 5) {
-      const url = match[1]?.trim();
-      const title = match[2]?.trim();
-      const description = match[3]?.trim();
-
-      if (title && title.length > 10 && !title.match(/^\d+\s*$/)) {
-        // Clean up description
-        const cleanDesc = description
-          ?.replace(/<[^>]+>/g, "")
-          ?.replace(/&[a-z]+;/g, "")
-          ?.slice(0, 200);
-
-        stories.push({
-          title,
-          description: cleanDesc || "Article from " + source.name,
-          url: url ? makeAbsoluteUrl(url, source.url) : source.url,
-          source: source.name,
-          category: source.category,
-          timestamp: new Date(),
-          image: getImageForKeywords(title),
-          relevanceScore: 0,
-        });
-        count++;
-      }
+  for (const source of SOURCES) {
+    try {
+      process.stdout.write(`  Fetching ${source.name}...`);
+      const sourceStories = source.type === "rss"
+        ? await fetchRssSource(source)
+        : await fetchHtmlSource(source);
+      stories.push(...sourceStories);
+      health[source.name] = sourceStories.length;
+      process.stdout.write(` ${sourceStories.length} stories\n`);
+    } catch (error) {
+      health[source.name] = 0;
+      process.stdout.write(` FAILED (${error.message})\n`);
     }
   }
 
-  // Fallback: simple extraction if patterns don't work
+  return { stories, health };
+}
+
+function extractStories(html, source) {
+  const $ = cheerioLoad(html);
+  const stories = [];
+  const seen = new Set();
+
+  // Selectors ordered from most specific to least specific
+  const linkSelectors = [
+    "article h2 a",
+    "article h3 a",
+    "h2.entry-title a",
+    "h3.entry-title a",
+    ".post-title a",
+    ".article-title a",
+    ".post-header a",
+    "h2 > a",
+    "h3 > a",
+  ];
+
+  for (const selector of linkSelectors) {
+    if (stories.length >= 5) break;
+    $(selector).each((_, el) => {
+      if (stories.length >= 5) return false;
+      const $el = $(el);
+      const title = $el.text().trim().replace(/\s+/g, " ");
+      const href = $el.attr("href");
+
+      if (!title || title.length < 10 || /^\d+\s*$/.test(title)) return;
+
+      // Skip navigation/tag/category links
+      if (href && /\/(tag|category|author|page|topic)\//.test(href)) return;
+      // Skip fragment-only or javascript links
+      if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+
+      const url = makeAbsoluteUrl(href, source.url);
+      const normalized = title.toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (seen.has(normalized)) return;
+      seen.add(normalized);
+
+      // Get description from nearest paragraph in the article container
+      const $container = $el.closest("article, .post, .entry, .card, li, .item");
+      const description = ($container.length ? $container : $el.parent())
+        .find("p")
+        .first()
+        .text()
+        .trim()
+        .replace(/\s+/g, " ")
+        .slice(0, 300) || `Article from ${source.name}`;
+
+      stories.push({
+        title,
+        description,
+        url,
+        source: source.name,
+        category: source.category,
+        timestamp: new Date(),
+        image: getImageForKeywords(title),
+        relevanceScore: 0,
+      });
+    });
+    if (stories.length >= 5) break;
+  }
+
+  // Fallback: grab headings without links
   if (stories.length === 0) {
-    const fallbackPattern =
-      /<(?:h[2-3])[^>]*>([^<]{10,200})<\/(?:h[2-3])>/gi;
-    let match;
-    let count = 0;
-    while ((match = fallbackPattern.exec(html)) !== null && count < 5) {
-      const title = match[1]?.trim();
-      if (title && title.length > 10 && !title.match(/^\d+\s*$/)) {
-        stories.push({
-          title,
-          description: "New article from " + source.name,
-          url: source.url,
-          source: source.name,
-          category: source.category,
-          timestamp: new Date(),
-          image: getImageForKeywords(title),
-          relevanceScore: 0,
-        });
-        count++;
-      }
-    }
+    $("h2, h3").each((_, el) => {
+      if (stories.length >= 5) return false;
+      const title = $(el).text().trim().replace(/\s+/g, " ");
+      if (!title || title.length < 10 || /^\d+\s*$/.test(title)) return;
+      const normalized = title.toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (seen.has(normalized)) return;
+      seen.add(normalized);
+      stories.push({
+        title,
+        description: `Article from ${source.name}`,
+        url: source.url,
+        source: source.name,
+        category: source.category,
+        timestamp: new Date(),
+        image: getImageForKeywords(title),
+        relevanceScore: 0,
+      });
+    });
   }
 
   return stories;
@@ -766,9 +835,9 @@ function generateSpread(story, index, total) {
   const styleClass = styles[index % styles.length];
   const number = String(index + 1).padStart(2, "0");
 
-  // Escape HTML in title and description
+  // Escape HTML in title; format commentary as paragraphs
   const safeTitle = escapeHtml(story.title);
-  const safeDesc = escapeHtml(story.description || "");
+  const commentary = formatCommentary(story.commentary || story.description);
 
   // Format content based on style
   if (styleClass === "spread-hero") {
@@ -776,7 +845,7 @@ function generateSpread(story, index, total) {
         <div class="spread-overlay">
             <div class="spread-number">${number}</div>
             <div class="spread-title">${safeTitle}</div>
-            <div class="spread-description">${safeDesc}</div>
+            ${commentary}
             <div class="spread-meta">
                 <span class="spread-source">${escapeHtml(story.source)}</span>
                 <a href="${escapeHtml(story.url)}" target="_blank" class="spread-link">Read →</a>
@@ -790,7 +859,7 @@ function generateSpread(story, index, total) {
         <img src="${story.image}" alt="${safeTitle}" class="article-image" />
         <div class="spread-number">${number}</div>
         <div class="spread-title"><span class="drop-cap">${firstChar}</span>${restOfTitle}</div>
-        <div class="spread-description">${safeDesc}</div>
+        ${commentary}
         <div class="spread-meta">
             <span class="spread-source">${escapeHtml(story.source)}</span>
             <a href="${escapeHtml(story.url)}" target="_blank" class="spread-link">Read full article →</a>
@@ -802,7 +871,7 @@ function generateSpread(story, index, total) {
         <div class="spread-number">${number}</div>
         <div class="stat-highlight">${number}</div>
         <div class="spread-title">${safeTitle}</div>
-        <div class="spread-description">${safeDesc}</div>
+        ${commentary}
         <div class="spread-meta">
             <span class="spread-source">${escapeHtml(story.source)}</span>
             <a href="${escapeHtml(story.url)}" target="_blank" class="spread-link">Learn more →</a>
@@ -814,7 +883,7 @@ function generateSpread(story, index, total) {
             <img src="${story.image}" alt="${safeTitle}" class="card-image" />
             <div class="spread-number">${number}</div>
             <div class="spread-title">${safeTitle}</div>
-            <div class="spread-description">${safeDesc}</div>
+            ${commentary}
             <div class="spread-meta">
                 <span class="spread-source">${escapeHtml(story.source)}</span>
                 <a href="${escapeHtml(story.url)}" target="_blank" class="spread-link">Read →</a>
@@ -830,7 +899,7 @@ function generateSpread(story, index, total) {
         <div>
             <div class="spread-number">${number}</div>
             <div class="spread-title">${safeTitle}</div>
-            <div class="spread-description">${safeDesc}</div>
+            ${commentary}
             <div class="spread-meta">
                 <span class="spread-source">${escapeHtml(story.source)}</span>
                 <a href="${escapeHtml(story.url)}" target="_blank" class="spread-link">Read more →</a>
@@ -852,138 +921,242 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
+function generateFallbackImage(source, category) {
+  const colors = {
+    "Software Engineering": ["#1a1a2e", "#64d7ff"],
+    "Business":             ["#1c2833", "#f0b27a"],
+    "AI Insiders":          ["#4a235a", "#d7bde2"],
+    "Open Source AI":       ["#1a5276", "#7fb3d3"],
+    "Research & Analysis":  ["#145a32", "#82e0aa"],
+    "Research & Policy":    ["#6e2f1a", "#f1948a"],
+    "Research & Academia":  ["#1a3a5c", "#aed6f1"],
+    "Unique":               ["#7d6608", "#f9e79f"],
+  };
+  const [bg, fg] = colors[category] || ["#2c2c2c", "#aaaaaa"];
+  const label = source.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400">
+  <rect width="800" height="400" fill="${bg}"/>
+  <text x="400" y="185" font-family="Georgia,serif" font-size="28" fill="${fg}" opacity="0.7" text-anchor="middle">${label}</text>
+  <text x="400" y="230" font-family="Georgia,serif" font-size="18" fill="${fg}" opacity="0.4" text-anchor="middle">${category}</text>
+</svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+}
+
+// Find the section of a page most relevant to the story title.
+// For newsletters (Rundown, TLDR, Import AI) the "page" is the whole issue —
+// this extracts only the story we care about. For regular articles it's a no-op.
+function findRelevantSection(text, title) {
+  const keywords = (title.toLowerCase().match(/\b[a-z]{4,}\b/g) || []);
+  if (keywords.length === 0) return text.slice(0, 3000);
+
+  // Split into paragraphs; each blank line is a potential section boundary
+  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 20);
+
+  let bestIdx = 0;
+  let bestScore = 0;
+
+  for (let i = 0; i < paragraphs.length; i++) {
+    const lower = paragraphs[i].toLowerCase();
+    const hits = keywords.filter(w => lower.includes(w)).length;
+    const score = hits / keywords.length;
+    if (score > bestScore) {
+      bestScore = score;
+      bestIdx = i;
+    }
+  }
+
+  // If nothing matched well, return the start of the document
+  if (bestScore < 0.25) return text.slice(0, 3000);
+
+  // Return the matched paragraph + the next 4 paragraphs (covers multi-para newsletter items)
+  return paragraphs.slice(bestIdx, bestIdx + 5).join("\n\n").slice(0, 3000);
+}
+
+async function fetchArticleData(url, title) {
+  try {
+    const response = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) return { image: null, content: null };
+
+    const html = await response.text();
+    const $ = cheerioLoad(html);
+
+    // og:image
+    const rawImage =
+      $('meta[property="og:image"]').attr("content") ||
+      $('meta[name="twitter:image"]').attr("content") ||
+      $('meta[name="twitter:image:src"]').attr("content") ||
+      null;
+    const image = rawImage && rawImage.startsWith("http") ? rawImage : null;
+
+    // Article content — strip chrome, keep body
+    $("nav, header, footer, script, style, .nav, .header, .footer, .sidebar, .ad, .subscribe, .newsletter-form").remove();
+    const bodyEl = $("article, .post-content, .entry-content, .article-body, main").first();
+    const rawText = (bodyEl.length ? bodyEl : $("body"))
+      .text()
+      .replace(/\s+/g, " ")
+      .replace(/ {2,}/g, "\n\n")
+      .trim();
+
+    const content = rawText.length > 100 ? findRelevantSection(rawText, title) : null;
+
+    return { image, content };
+  } catch {
+    return { image: null, content: null };
+  }
+}
+
+const SEEN_TITLES_FILE = path.join(__dirname, "seen-titles.json");
+const SEEN_TTL_DAYS = 7;
+
+function loadSeenTitles() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(SEEN_TITLES_FILE, "utf8"));
+    const cutoff = Date.now() - SEEN_TTL_DAYS * 24 * 60 * 60 * 1000;
+    return Object.fromEntries(
+      Object.entries(raw).filter(([, date]) => new Date(date).getTime() > cutoff)
+    );
+  } catch {
+    return {};
+  }
+}
+
+function saveSeenTitles(existing, newTitles) {
+  const today = new Date().toISOString().split("T")[0];
+  const updated = { ...existing };
+  for (const title of newTitles) updated[title] = today;
+  fs.writeFileSync(SEEN_TITLES_FILE, JSON.stringify(updated, null, 2));
+}
+
+function normalizeTitle(title) {
+  return title.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function formatCommentary(text) {
+  if (!text) return "";
+  return text
+    .split(/\n\n+/)
+    .filter((p) => p.trim())
+    .map((p) => `<p class="spread-description">${escapeHtml(p.trim())}</p>`)
+    .join("\n");
+}
+
+async function generateCommentary(story, articleContent) {
+  const client = new Anthropic();
+  const context = articleContent
+    ? `Article content:\n${articleContent}`
+    : `Available context: ${story.description}`;
+
+  const prompt = `You are writing for a daily AI news digest. One reader: technically sophisticated, not a policymaker, doesn't care about AI governance theater.
+
+Article: "${story.title}"
+Source: ${story.source} (${story.category})
+${context}
+
+Write 1–2 tight paragraphs covering:
+1. What this news actually is — specific, no vague summary
+2. How it moves the field forward (or doesn't)
+3. Context the reader likely doesn't already know
+4. Ethical implications only if genuinely material — skip the boilerplate
+
+Style: Sharp. Witty. Pointed. Blunt. No "it remains to be seen." No "this could potentially." No "in the rapidly evolving landscape of." Call things what they are. If something is overhyped, say so.`;
+
+  try {
+    const response = await client.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 500,
+      messages: [{ role: "user", content: prompt }],
+    });
+    return response.content[0].text.trim();
+  } catch (err) {
+    console.error(`Commentary failed for "${story.title}":`, err.message);
+    return story.description;
+  }
+}
+
 async function main() {
+  const testMode = process.argv.includes("--test");
+  const storyLimit = testMode ? 2 : 18;
+  const minThreshold = testMode ? 1 : 5;
+
+  if (testMode) {
+    console.log("TEST MODE — 2 stories, seen-titles will not be updated\n");
+  }
+
   try {
     console.log("Starting Morning Edition curation...");
 
-    // For now, create a demo with sample stories since we're testing
-    // In production, this would fetch real stories
-    const stories = [
-      {
-        title: "Claude Updates: New Improvements to AI Assistant",
-        description: "Latest enhancements to Claude's capabilities including improved reasoning, better context understanding, and new tool integration features.",
-        source: "OpenAI Blog",
-        category: "AI Insiders",
-        url: "https://openai.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1677442d019cecf8978b4ec4c75b31b2?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Building Production-Grade AI Tools",
-        description: "Learn best practices for deploying AI applications in production environments, from infrastructure to monitoring and scaling.",
-        source: "The Pragmatic Engineer",
-        category: "Software Engineering",
-        url: "https://pragmaticengineer.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "DeepMind Releases New Research on Neural Networks",
-        description: "Breakthrough research on transformer architectures and attention mechanisms that could improve model efficiency by 40%.",
-        source: "Google DeepMind News",
-        category: "AI Insiders",
-        url: "https://deepmind.google",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1516321318423-f06fe8c66a7b?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "AI-Powered Privacy Tools Transform Data Protection",
-        description: "New generation of privacy-preserving machine learning tools allows companies to train models without exposing sensitive user data.",
-        source: "TechCrunch AI",
-        category: "Business",
-        url: "https://techcrunch.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1550439062-1d5daa881006?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Creative Code Generation: The Future of Development",
-        description: "AI code generation tools are evolving beyond simple completions to handle complex architectural decisions and design patterns.",
-        source: "Latent Space",
-        category: "Software Engineering",
-        url: "https://latentspace.dev",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Open Source AI Framework Reaches 1M Downloads",
-        description: "Community-driven AI framework hits major milestone, demonstrating strong adoption in enterprise and startup environments worldwide.",
-        source: "The Rundown AI",
-        category: "Unique",
-        url: "https://therundown.ai",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1517694712845-70c9cc0c1d5b?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Developers Embrace AI-Assisted Coding Workflows",
-        description: "Survey reveals 78% of developers now use AI tools daily for coding, with 65% reporting significant productivity gains.",
-        source: "VentureBeat",
-        category: "Business",
-        url: "https://venturebeat.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Privacy-First Language Models Gain Traction",
-        description: "New approaches to federated learning and differential privacy enable AI models that respect user privacy by design.",
-        source: "The Pragmatic Engineer",
-        category: "Software Engineering",
-        url: "https://pragmaticengineer.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1550439062-1d5daa881006?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Weird Science: AI Discovers New Materials",
-        description: "Machine learning algorithms identify novel crystalline structures with unique properties, accelerating materials science by years.",
-        source: "Latent Space",
-        category: "Software Engineering",
-        url: "https://latentspace.dev",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1518581506702-bba5e3b2c6f7?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "API Design Best Practices for AI Services",
-        description: "Comprehensive guide to designing robust APIs for machine learning services with emphasis on scalability and reliability.",
-        source: "OpenAI Blog",
-        category: "AI Insiders",
-        url: "https://openai.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1573804633827-038bfbb4e87c?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Automation Tools Powered by Recent AI Breakthroughs",
-        description: "Latest AI models enable new wave of intelligent automation for business processes, reducing manual work by 50%+.",
-        source: "The Rundown AI",
-        category: "Unique",
-        url: "https://therundown.ai",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1516321318423-f06fe8c66a7b?w=800&h=400&fit=crop&q=80",
-      },
-      {
-        title: "Machine Learning Framework Wars: Which Will Win?",
-        description: "Analysis of competing ML frameworks shows PyTorch gaining ground in research, TensorFlow dominating enterprise.",
-        source: "TechCrunch AI",
-        category: "Business",
-        url: "https://techcrunch.com",
-        timestamp: new Date(),
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop&q=80",
-      },
-    ];
+    const seenTitles = loadSeenTitles();
 
-    const curated = curateStories(stories, 12);
+    console.log(`Fetching from ${SOURCES.length} sources...`);
+    const { stories, health } = await fetchStories();
 
-    console.log(`Curated ${curated.length} stories`);
+    // Source health report
+    console.log("\nSource health:");
+    const dead = [];
+    for (const [name, count] of Object.entries(health)) {
+      const flag = count === 0 ? " ⚠  NO STORIES" : "";
+      console.log(`  ${count.toString().padStart(2)} stories  ${name}${flag}`);
+      if (count === 0) dead.push(name);
+    }
+    if (dead.length) {
+      console.log(`\n  Dead sources (JS-rendered or blocked): ${dead.join(", ")}`);
+    }
+
+    // Filter stories seen in the last ${SEEN_TTL_DAYS} days
+    const fresh = stories.filter(s => !seenTitles[normalizeTitle(s.title)]);
+    console.log(`\n${stories.length} raw → ${fresh.length} after dedup (${stories.length - fresh.length} already seen)`);
+
+    const curated = curateStories(fresh, storyLimit);
+    console.log(`${curated.length} stories after scoring/curation`);
+
+    if (curated.length < minThreshold) {
+      console.error(`\nERROR: Only ${curated.length} stories passed curation — minimum is ${minThreshold}. Aborting.`);
+      process.exit(1);
+    }
+
     curated.forEach((s, i) => {
-      console.log(`${i + 1}. ${s.title} (${s.source})`);
+      console.log(`  ${i + 1}. ${s.title} (${s.source})`);
     });
 
+    // Fetch article pages in parallel: extract og:image + relevant content in one request
+    console.log("\nFetching article content and images...");
+    const withArticleData = await Promise.all(
+      curated.map(async (story) => {
+        const { image, content } = await fetchArticleData(story.url, story.title);
+        return {
+          ...story,
+          image: image || generateFallbackImage(story.source, story.category),
+          articleContent: content,
+        };
+      })
+    );
+
+    // Generate sharp commentary for each story via Claude API (sequential to avoid rate limits)
+    console.log("\nGenerating commentary...");
+    const enriched = [];
+    for (let i = 0; i < withArticleData.length; i++) {
+      const story = withArticleData[i];
+      const commentary = await generateCommentary(story, story.articleContent);
+      console.log(`  ${i + 1}/${withArticleData.length} done: ${story.title.slice(0, 50)}`);
+      enriched.push({ ...story, commentary });
+    }
+
+    // Persist seen titles (skipped in test mode so test runs don't pollute the dedup list)
+    if (!testMode) {
+      saveSeenTitles(seenTitles, enriched.map(s => normalizeTitle(s.title)));
+    }
+
     // Generate HTML
-    const html = generateHTML(curated);
+    const html = generateHTML(enriched);
 
     // Save file
     const date = new Date().toISOString().split("T")[0];
-    const filename = path.join(__dirname, "magazines", `${date}.html`);
+    const suffix = testMode ? `-test` : "";
+    const filename = path.join(__dirname, "magazines", `${date}${suffix}.html`);
 
-    // Ensure directory exists
     fs.mkdirSync(path.dirname(filename), { recursive: true });
     fs.writeFileSync(filename, html);
 

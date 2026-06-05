@@ -21,13 +21,15 @@ jobs:
 
       - name: Run curator
         run: node curator.js
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Commit & push
         run: |
           git config user.name "Morning Edition Bot"
           git config user.email "bot@example.com"
-          if [ -n "$(git status --porcelain magazines/)" ]; then
-            git add magazines/
+          if [ -n "$(git status --porcelain magazines/ seen-titles.json)" ]; then
+            git add magazines/ seen-titles.json
             git commit -m "Morning Edition - $(date +%Y-%m-%d)"
             git push
           fi

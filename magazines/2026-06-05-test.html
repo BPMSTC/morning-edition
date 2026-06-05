@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Edition - 2026-06-05</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .magazine {
+            max-width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+            border-bottom: 4px solid #d4a574;
+        }
+
+        .header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 96px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .header .date {
+            font-size: 24px;
+            font-weight: 300;
+            color: #b0b0b0;
+            letter-spacing: 2px;
+        }
+
+        .header .tagline {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #d4a574;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .spreads {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .spread {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spread::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .spread-number {
+            font-family: 'Fraunces', serif;
+            font-size: 200px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 40px;
+            opacity: 0.15;
+        }
+
+        .spread-title {
+            font-family: 'Fraunces', serif;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 40px;
+        }
+
+        .spread-content {
+            font-size: 24px;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .spread-description {
+            font-size: 20px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .spread-meta {
+            font-size: 18px;
+            opacity: 0.8;
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .spread-source {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .spread-link {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .spread-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .article-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-image-small {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .article-image-sidebar {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 20px;
+        }
+
+        .spread-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 80px 60px;
+            border-radius: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .spread-category {
+            opacity: 0.6;
+        }
+
+        /* Distinct Spread Styles */
+
+        .spread-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .spread-midnight {
+            background: #1a1a2e;
+            color: #eee;
+        }
+
+        .spread-midnight .spread-title {
+            color: #64d7ff;
+        }
+
+        .spread-alert {
+            background: #f8e9e4;
+            color: #2c2c2c;
+            border-left: 20px solid #d4574a;
+        }
+
+        .spread-alert .spread-title {
+            color: #d4574a;
+        }
+
+        .spread-terminal {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', monospace;
+            padding: 60px;
+        }
+
+        .spread-terminal .spread-title {
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+            font-size: 48px;
+        }
+
+        .spread-terminal .spread-content {
+            font-size: 20px;
+        }
+
+        .spread-academic {
+            background: #faf8f3;
+            color: #2c2c2c;
+        }
+
+        .spread-academic .spread-title {
+            color: #4a4a4a;
+        }
+
+        .spread-academic .drop-cap {
+            float: left;
+            font-family: 'Fraunces', serif;
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 80px;
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+
+        .spread-stat {
+            background: linear-gradient(to bottom, #f5f5f5, #ffffff);
+            color: #1a1a1a;
+        }
+
+        .spread-stat .stat-highlight {
+            font-family: 'Fraunces', serif;
+            font-size: 140px;
+            font-weight: 700;
+            color: #d4a574;
+            line-height: 1;
+            margin: 40px 0;
+        }
+
+        .spread-vibrant {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: #1a1a1a;
+        }
+
+        .spread-vibrant .spread-title {
+            color: #1a1a1a;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.3);
+        }
+
+        .spread-minimal {
+            background: white;
+            color: #2c2c2c;
+            padding: 100px 100px;
+        }
+
+        .spread-minimal .spread-number {
+            color: #d4a574;
+            opacity: 0.3;
+            font-size: 150px;
+        }
+
+        .spread-column {
+            background: #f9f9f9;
+            color: #2c2c2c;
+        }
+
+        .spread-column .spread-content {
+            columns: 2;
+            column-gap: 60px;
+        }
+
+        .spread-tilted {
+            background: linear-gradient(45deg, #e8f4f8, #d4e9f7);
+            color: #2c2c2c;
+            transform: skewY(-2deg);
+        }
+
+        .spread-tilted .spread-title {
+            transform: skewY(2deg);
+        }
+
+        .spread-neon {
+            background: #0a0e27;
+            color: #00ff88;
+            border-top: 8px solid #00ff88;
+            border-bottom: 8px solid #ff00ff;
+        }
+
+        .spread-neon .spread-title {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .spread-vintage {
+            background: #e8e4d0;
+            color: #3a3a3a;
+            border: 20px solid #8b7355;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        .spread-vintage .spread-title {
+            text-decoration: underline;
+            text-decoration-color: #8b7355;
+        }
+
+        .spread-floating {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px;
+        }
+
+        .spread-floating .card {
+            background: rgba(255,255,255,0.95);
+            color: #2c2c2c;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(-20px);
+        }
+
+        .spread-floating .card .spread-title {
+            color: #667eea;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: #999;
+            text-align: center;
+            padding: 60px 40px;
+            font-size: 18px;
+            border-top: 4px solid #d4a574;
+        }
+
+        .footer-title {
+            font-family: 'Fraunces', serif;
+            font-size: 36px;
+            color: #d4a574;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .spread {
+                padding: 60px 40px;
+            }
+
+            .spread-title {
+                font-size: 48px;
+            }
+
+            .header h1 {
+                font-size: 56px;
+            }
+
+            .spread-number {
+                font-size: 120px;
+            }
+
+            .spread-content {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="magazine">
+        <div class="header">
+            <h1>Morning Edition</h1>
+            <div class="date">Friday, June 5, 2026</div>
+            <div class="tagline">Your Daily AI News Curated</div>
+        </div>
+
+        <div class="spreads">
+            <div class="spread spread-hero" style="background-image: url('https://i0.wp.com/jack-clark.net/wp-content/uploads/2026/05/https3A2F2Fsubstack-post-media.s3.amazonaws.com2Fpublic2Fimages2Fd6d17996-2bef-40a4-abe3-be72a0e8a227_258x258-qSUQ99.jpg?fit=258%2C258&ssl=1'); background-size: cover; background-position: center;">
+        <div class="spread-overlay">
+            <div class="spread-number">01</div>
+            <div class="spread-title">Import AI 457: AI stuxnet; cursed Muon optimizer; and positive alignment</div>
+            <p class="spread-description"># The Fast16 Precedent Nobody Needed</p>
+<p class="spread-description">Researchers at SentinelOne reverse-engineered a 20-year-old Windows virus (fast16.sys) that did something genuinely weird: it surgically patched floating-point math libraries in memory to corrupt precision calculations in specialized engineering software. The targeting was surgical—LS-DYNA (used for nuclear weapons modeling), PKPM (structural analysis), MOHID (hydrodynamic simulation). Not a spray-and-pray worm. A scalpel. The malware injected standalone FPU instruction sequences that had nothing to do with typical code-execution tricks; it just made the math slightly wrong in ways that would accumulate, degrade, or invalidate years of research. Evidence points to state-level origin circa mid-2000s, likely related to Iran&#039;s nuclear program.</p>
+<p class="spread-description">Clark&#039;s framing—that this is how a superintelligence might hobble competitors—is less interesting than the actual precedent: we&#039;ve had proof-of-concept code for *two decades* that shows how to degrade specific research domains without triggering obvious alarms. The virus sat dormant in the wild. No major defensive response. No real discussion in infosec circles about precision-calculation sabotage as a class of threat. This matters because (a) the techniques are reproducible and didn&#039;t require exotic exploits, (b) it worked, and (c) the gap between &quot;found in the wild&quot; and &quot;widely known problem&quot; was apparently invisible to everyone. If you&#039;re threat-modeling AI labs or physics research programs, &quot;subtle corruption of numerical results in specialized tools&quot; should probably already be on your list.</p>
+            <div class="spread-meta">
+                <span class="spread-source">Import AI</span>
+                <a href="https://jack-clark.net/2026/05/18/import-ai-457-ai-stuxnet-cursed-muon-optimizer-and-positive-alignment/" target="_blank" class="spread-link">Read →</a>
+            </div>
+        </div>
+    </div>
+<div class="spread spread-midnight">
+    <div style="display: flex; gap: 40px; align-items: center;">
+        <img src="https://i0.wp.com/jack-clark.net/wp-content/uploads/2026/05/https3A2F2Fsubstack-post-media.s3.amazonaws.com2Fpublic2Fimages2Fd6d17996-2bef-40a4-abe3-be72a0e8a227_258x258-nP6BEw.jpg?fit=258%2C258&ssl=1" alt="Import AI 455: Automating AI Research" class="article-image-sidebar" />
+        <div>
+            <div class="spread-number">02</div>
+            <div class="spread-title">Import AI 455: Automating AI Research</div>
+            <p class="spread-description"># Import AI 455: Automating AI Research</p>
+<p class="spread-description">Jack Clark argues that frontier AI labs have already assembled the technical components needed for end-to-end automated AI R&amp;D—systems that can design, build, and train their successors without human researchers in the loop. His 60%+ confidence that this happens by 2028 rests on observable progress in code generation (where LLMs now handle substantial engineering tasks), automated hyperparameter optimization, and scaling trends suggesting models will soon be &quot;creative enough&quot; to propose novel research directions. This isn&#039;t speculative; he&#039;s anchoring to arXiv papers, deployed products, and reproducible benchmarks. The real claim is narrower than the headlines it&#039;ll generate: he expects proof-of-concept within 1–2 years (probably using non-frontier models), with frontier-scale versions harder because they&#039;re expensive and require human coordination. He&#039;s spending 2026 thinking through implications rather than defending the prediction itself.</p>
+<p class="spread-description">The honest version: Clark is pattern-matching current capabilities against a specific technical milestone and finding it plausible. Whether that matters depends entirely on whether you believe (a) scaling trends continue and (b) creativity at the research level is primarily a scaling phenomenon rather than something requiring architectural innovation we haven&#039;t seen. The first is reasonable; the second is the load-bearing assumption and gets less scrutiny here than it deserves. What *does* move: if true, this collapses the timeline for understanding whether current safety/alignment work scales to superintelligent systems—from &quot;theoretical problem we&#039;ll solve eventually&quot; to &quot;immediate engineering constraint.&quot; That&#039;s material, not theatrical. Skip the governance hand-wringing; the real question is whether your favorite safety approach works when the systems doing the innovating have no humans in their loop.</p>
+            <div class="spread-meta">
+                <span class="spread-source">Import AI</span>
+                <a href="https://jack-clark.net/2026/05/04/import-ai-455-automating-ai-research/" target="_blank" class="spread-link">Read more →</a>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-title">End of Edition</div>
+            <p>Next edition: Sat, Jun 6</p>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.5;">Generated on 6/5/2026, 1:03:03 PM</p>
+        </div>
+    </div>
+</body>
+</html>
